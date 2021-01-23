@@ -1,0 +1,28 @@
+{% extends "app/base_schema.html" %}
+
+{% block title %}Schema create{% endblock %}
+
+{% block content_title %}New schema{% endblock %}
+{% block button %}<input type="submit" value="Submit" form="schema-create">{% endblock %}
+
+
+{% block content %}
+
+<form id="schema-create" method="post" action="{% url 'schema-create' %}">
+{% csrf_token %}
+{{ schema_form.as_p }}
+<p>Schema columns</p>
+{{ column_formset.management_form }}
+{% for form in column_formset %}
+<div class="column-form">
+{{ form.as_table }}
+<button id="del-form" type="button">Delete column</button>
+</div>
+{% endfor %}
+<button id="add-form" type="button">Add column</button>
+</form>
+
+<script>
+</script>
+
+{% endblock %}

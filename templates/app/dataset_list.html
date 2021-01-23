@@ -1,0 +1,45 @@
+{% extends "app/base_schema.html" %}
+
+{% block title %}Dataset list{% endblock %}
+{% block content_title %}Data sets{% endblock %}
+{% block button %}
+<form method="post" action="{% url 'dataset-generate' %}">
+{% csrf_token %}
+    <label><input type="text" required name="rows">Rows</label>
+    <input type="hidden" name="schema" value={{ schema_id }}>
+
+    <input type="submit" value="Generate data">
+</form>
+{% endblock %}
+
+{% block content %}
+{% if dataset_list %}
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Created</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for dataset in dataset_list %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ dataset.created }}</td>
+            <td>{{ dataset.status }}</td>
+            {% if dataset.file %}
+            <td><a href="{{ dataset.file.path }}">Download</a></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>You don't have any data sets yet. Press the button "Generate data" for create one.</p>
+{% endif %}
+
+<script>
+</script>
+{% endblock %}
